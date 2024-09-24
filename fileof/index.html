@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Input Height and Width Restrictions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+
+        .file-input-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .popup {
+            display: none; /* Hidden by default */
+            position: absolute;
+            z-index: 1; /* Sit on top */
+            left: 50%;
+            top: 100%; /* Position below the input */
+            transform: translateX(-50%); /* Center the popup */
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #888;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            width: 200px;
+            text-align: center;
+        }
+
+        .popup button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="file-input-container">
+    <input type="file" id="fileInput" />
+    <div id="popup" class="popup">
+        <p><strong>Image Restrictions:</strong></p>
+        <p>- Width: max 1920px<br>- Height: max 1080px</p>
+        <button id="okButton">OK</button>
+    </div>
+</div>
+
+<script>
+    const fileInput = document.getElementById("fileInput");
+    const popup = document.getElementById("popup");
+    const okButton = document.getElementById("okButton");
+
+    // Show the popup on hover
+    fileInput.onmouseenter = function() {
+        popup.style.display = "block";
+    }
+
+    // Hide the popup when OK is clicked
+    okButton.onclick = function() {
+        popup.style.display = "none";
+    }
+
+    // Hide the popup when mouse leaves the input area
+    fileInput.onmouseleave = function() {
+        const handleMouseLeave = (event) => {
+            if (!popup.contains(event.relatedTarget) && !fileInput.contains(event.relatedTarget)) {
+                popup.style.display = "none";
+                fileInput.removeEventListener('mouseleave', handleMouseLeave);
+            }
+        };
+        fileInput.addEventListener('mouseleave', handleMouseLeave);
+    };
+</script>
+
+</body>
+</html>
